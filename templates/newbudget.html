@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Budgeting App">
+        <title>Budget App</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    </head>
+    <body>
+        <nav>
+            <a href ="{{ url_for('index') }}"> Home </a> ||
+            <a href ="{{ url_for('get_budget') }}"> My Budget</a> ||
+            <a href="{{ url_for('new_budget') }}"> Add Budget</a> ||
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </nav> 
+
+        {% if user %}
+        <nav>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </nav>
+        {% else %}
+        <nav>
+            <a href="{{ url_for('login') }}"> Sign In</a> ||
+            <a href="{{ url_for('register') }}">Register</a>
+		</nav>
+        {% endif %}
+
+        <h1>Welcome {{user}} to the Budget App!</h1>
+
+        {% if note %}
+			<form action="{{ url_for('update_budget', budget_id=budget.id) }}" method="post">
+		{% else %}
+        <form action="new" method="post">
+        {% endif %}
+
+           <p><label>Title </label></p>
+           <p><input type="text" name="title" value="{% if budget %}{{budget.title}} {%endif%}"/></p>
+            
+            <p><label>Budget </label></p>
+                <p>
+                    <textarea name="budgetText" rows="12" cols="0"  >
+                    {% if budget %}
+				    	{{budget.text}}
+				    {% else %}
+				    	Add your new budget
+				{% endif %}
+                </textarea>
+                </p>
+                
+                <p>
+                    {% if note %}
+					<input type="submit" value="Update Budget"/>
+				    {% else %}
+                    <input type="submit" value="Add Budget"/>
+                    {% endif %}
+                </p>
+        </form>
+    </body>
+</html>
+    
